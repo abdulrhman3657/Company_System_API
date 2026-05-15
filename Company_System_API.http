@@ -1,0 +1,34 @@
+﻿@Company_System_API_HostAddress = https://localhost:7286
+
+GET {{Company_System_API_HostAddress}}/
+
+###
+
+GET {{Company_System_API_HostAddress}}/departments
+
+###
+
+GET {{Company_System_API_HostAddress}}/employees
+
+###
+
+POST {{Company_System_API_HostAddress}}/employees
+Content-Type: application/json
+
+{
+  "FirstName": "ab",
+  "LastName": "a",
+  "Salary": 5000,
+  "DepartmentId": 1
+}
+
+###
+
+POST {{Company_System_API_HostAddress}}/departments
+Content-Type: application/json
+
+{
+  "Name": "CS"
+}
+
+###
