@@ -12,23 +12,23 @@ GET {{Company_System_API_HostAddress}}/employees
 
 ###
 
-POST {{Company_System_API_HostAddress}}/employees
+POST {{Company_System_API_HostAddress}}/api/employee
 Content-Type: application/json
 
 {
   "FirstName": "ab",
   "LastName": "a",
   "Salary": 5000,
-  "DepartmentId": 1
+  "DepartmentId": 3
 }
 
 ###
 
-POST {{Company_System_API_HostAddress}}/departments
+POST {{Company_System_API_HostAddress}}/api/department
 Content-Type: application/json
 
 {
-  "Name": "CS"
+  "Name": "CS2"
 }
 
 ###

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Company_System_API
+namespace Company_System_API.Models
 {
     public class DB : DbContext
     {

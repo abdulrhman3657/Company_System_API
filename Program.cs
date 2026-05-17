@@ -1,8 +1,10 @@
-using Company_System_API;
-using Company_System_API.Endpoints;
+using Company_System_API.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// add controller support for the app
+builder.Services.AddControllers();
 
 // Swagger services
 builder.Services.AddEndpointsApiExplorer();
@@ -29,9 +31,7 @@ app.MapGet("/", () =>
     return Results.Ok(new { response = "Welcome to company API" });
 });
 
-// employee router
-app.MapEmployeeEndpoints();
-// department router
-app.MapDepartmentEndpoints();
+// look at all controller classes and connect their routes to the HTTP request pipeline
+app.MapControllers();
 
 app.Run();
