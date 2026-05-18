@@ -1,5 +1,5 @@
 ﻿using Company_System_API.Models;
-using Microsoft.AspNetCore.Http;
+using Company_System_API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company_System_API.Controllers
@@ -8,31 +8,37 @@ namespace Company_System_API.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
+        private readonly EmployeeService employeeService;
+
+        public EmployeeController(EmployeeService employeeServiceFromDI)
+        {
+            employeeService = employeeServiceFromDI;
+        }
+
         // Get all employees
         [HttpGet]
-        public IActionResult GetEmployees(DB db)
+        public IActionResult GetEmployees()
         {
-            List<Employee> Employees = db.EmployeeDB.ToList();
+
+            List <Employee> Employees = employeeService.GetEmployeesService();
 
             return Ok(Employees);
         }
 
         // Add new employee
         [HttpPost]
-        public IActionResult AddEmployee(Employee employee, DB db)
+        public IActionResult AddEmployee(Employee employee)
         {
-            db.EmployeeDB.Add(employee);
-
-            db.SaveChanges();
+            employeeService.AddEmployeeService(employee);
 
             return Ok(employee);
         }
 
         // Get employee by id
         [HttpGet("{id}")]
-        public IActionResult GetEmployeeById(DB db, int id)
+        public IActionResult GetEmployeeById(int id)
         {
-            Employee? employee = db.EmployeeDB.Find(id);
+            Employee? employee = employeeService.GetEmployeeByIdService(id);
 
             if (employee == null)
             {

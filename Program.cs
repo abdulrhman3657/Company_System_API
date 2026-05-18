@@ -1,4 +1,5 @@
-using Company_System_API.Models;
+using Company_System_API.Data;
+using Company_System_API.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,12 @@ builder.Services.AddSwaggerGen();
 // register DB so it is not treated as request body
 builder.Services.AddDbContext<DB>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Registers EmployeeService in ASP.NET Core dependency injection
+// so controllers can access it
+// Scoped means create one EmployeeService object per HTTP request
+builder.Services.AddScoped<EmployeeService>();
+builder.Services.AddScoped<DepartmentService>();
 
 var app = builder.Build();
 

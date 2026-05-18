@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Company_System_API.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace Company_System_API.Models
+namespace Company_System_API.Data
 {
     public class DB : DbContext
     {
