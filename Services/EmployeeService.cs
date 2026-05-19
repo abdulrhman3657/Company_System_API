@@ -1,37 +1,31 @@
-﻿using Company_System_API.Data;
-using Company_System_API.Models;
+﻿using Company_System_API.Models;
+using Company_System_API.Repositories;
 
 namespace Company_System_API.Services
 {
-    public class EmployeeService
+    public class EmployeeService : IEmployeeService
     {
 
-        // readonly means that this varviable is set in the constructor and can not be changed later
-        private readonly DB db;
+        private readonly IEmployeeRepository employeeRepository;
 
-        public EmployeeService(DB dbFromDI)
+        public EmployeeService(IEmployeeRepository employeeRepositoryFromDI)
         {
-            db = dbFromDI;
+            employeeRepository = employeeRepositoryFromDI;
         }
 
         public List<Employee> GetEmployeesService()
         {
-
-            return db.EmployeeDB.ToList();
+            return employeeRepository.GetEmployees();
         }
 
         public void AddEmployeeService(Employee employee)
         {
-            db.EmployeeDB.Add(employee);
-
-            db.SaveChanges();
+            employeeRepository.AddEmployee(employee);
         }
 
         public Employee? GetEmployeeByIdService(int id)
         {
-            Employee? employee = db.EmployeeDB.Find(id);
-
-            return employee;
+            return employeeRepository.GetEmployeeById(id);
         }
 
     }

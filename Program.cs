@@ -1,4 +1,5 @@
 using Company_System_API.Data;
+using Company_System_API.Repositories;
 using Company_System_API.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,8 +20,14 @@ builder.Services.AddDbContext<DB>(options =>
 // Registers EmployeeService in ASP.NET Core dependency injection
 // so controllers can access it
 // Scoped means create one EmployeeService object per HTTP request
-builder.Services.AddScoped<EmployeeService>();
-builder.Services.AddScoped<DepartmentService>();
+// When controller asks for IEmployeeService, create a EmployeeService as it
+// satisfy IEmployeeService contract
+// you can swap this with ex: EmployeeServiceTestData
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
 var app = builder.Build();
 

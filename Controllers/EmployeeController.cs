@@ -8,9 +8,9 @@ namespace Company_System_API.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-        private readonly EmployeeService employeeService;
+        private readonly IEmployeeService employeeService;
 
-        public EmployeeController(EmployeeService employeeServiceFromDI)
+        public EmployeeController(IEmployeeService employeeServiceFromDI)
         {
             employeeService = employeeServiceFromDI;
         }

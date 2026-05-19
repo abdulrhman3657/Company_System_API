@@ -8,9 +8,9 @@ namespace Company_System_API.Controllers
     [ApiController]
     public class DepartmentController : ControllerBase
     {
-        private readonly DepartmentService departmentService;
+        private readonly IDepartmentService departmentService;
 
-        public DepartmentController(DepartmentService departmentServiceFromDI)
+        public DepartmentController(IDepartmentService departmentServiceFromDI)
         {
             departmentService = departmentServiceFromDI;
         }

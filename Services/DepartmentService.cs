@@ -1,35 +1,30 @@
-﻿using Company_System_API.Data;
-using Company_System_API.Models;
+﻿using Company_System_API.Models;
+using Company_System_API.Repositories;
 
 namespace Company_System_API.Services
 {
-    public class DepartmentService
+    public class DepartmentService : IDepartmentService
     {
-        private readonly DB db;
+        private readonly IDepartmentRepository departmentRepository;
 
-        public DepartmentService(DB dbFromDI)
+        public DepartmentService(IDepartmentRepository departmentRepositoryFromDI)
         {
-            db = dbFromDI;
+            departmentRepository = departmentRepositoryFromDI;
         }
 
         public List<Department> GetDepartmentsService()
         {
-
-            return db.DepartmentDB.ToList();
+            return departmentRepository.GetDepartments();
         }
         
         public void AddDepartmentService(Department department)
         {
-            db.DepartmentDB.Add(department);
-
-            db.SaveChanges();
+            departmentRepository.AddDepartment(department);
         }
 
         public Department? GetDepartmentByIdService(int id)
         {
-            Department? department = db.DepartmentDB.Find(id);
-
-            return department;
+            return departmentRepository.GetDepartmentById(id);
         }
     }
 }
