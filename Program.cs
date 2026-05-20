@@ -1,7 +1,7 @@
-using Company_System_API.Data;
-using Company_System_API.Models;
-using Company_System_API.Repositories;
-using Company_System_API.Services;
+using Company_System_Infrastructure.Data;
+using Company_System_Infrastructure.Models;
+using Company_System_Infrastructure.Repositories;
+using Company_System_Application.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

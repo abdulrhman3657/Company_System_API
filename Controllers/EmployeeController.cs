@@ -1,5 +1,5 @@
-﻿using Company_System_API.Models;
-using Company_System_API.Services;
+﻿using Company_System_Infrastructure.Models;
+using Company_System_Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company_System_API.Controllers
