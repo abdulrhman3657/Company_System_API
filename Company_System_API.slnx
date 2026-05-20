@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="../Company_System_Application/Company_System_Application.csproj" Id="fa321993-8c56-4dfa-99df-4b6d8a4dc264" />
-  <Project Path="../Company_System_Infrastructure/Company_System_Infrastructure.csproj" Id="acbb7a9b-c721-4647-b61e-acd675945f8d" />
-  <Project Path="Company_System_API.csproj" />
+  <Project Path="Company_System_API/Company_System_API.csproj" />
+  <Project Path="Company_System_Application/Company_System_Application.csproj" />
+  <Project Path="Company_System_Infrastructure/Company_System_Infrastructure.csproj" />
 </Solution>
