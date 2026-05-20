@@ -5,26 +5,26 @@ namespace Company_System_API.Services
 {
     public class DepartmentService : IDepartmentService
     {
-        private readonly IDepartmentRepository departmentRepository;
+        private readonly IGenericRepository<Department> departmentRepository;
 
-        public DepartmentService(IDepartmentRepository departmentRepositoryFromDI)
+        public DepartmentService(IGenericRepository<Department> departmentRepositoryFromDI)
         {
             departmentRepository = departmentRepositoryFromDI;
         }
 
         public List<Department> GetDepartmentsService()
         {
-            return departmentRepository.GetDepartments();
+            return departmentRepository.Get();
         }
         
         public void AddDepartmentService(Department department)
         {
-            departmentRepository.AddDepartment(department);
+            departmentRepository.Add(department);
         }
 
         public Department? GetDepartmentByIdService(int id)
         {
-            return departmentRepository.GetDepartmentById(id);
+            return departmentRepository.GetById(id);
         }
     }
 }

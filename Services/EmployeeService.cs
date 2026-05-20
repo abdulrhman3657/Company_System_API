@@ -6,26 +6,26 @@ namespace Company_System_API.Services
     public class EmployeeService : IEmployeeService
     {
 
-        private readonly IEmployeeRepository employeeRepository;
+        private readonly IGenericRepository<Employee> employeeRepository;
 
-        public EmployeeService(IEmployeeRepository employeeRepositoryFromDI)
+        public EmployeeService(IGenericRepository<Employee> employeeRepositoryFromDI)
         {
             employeeRepository = employeeRepositoryFromDI;
         }
 
         public List<Employee> GetEmployeesService()
         {
-            return employeeRepository.GetEmployees();
+            return employeeRepository.Get();
         }
 
         public void AddEmployeeService(Employee employee)
         {
-            employeeRepository.AddEmployee(employee);
+            employeeRepository.Add(employee);
         }
 
         public Employee? GetEmployeeByIdService(int id)
         {
-            return employeeRepository.GetEmployeeById(id);
+            return employeeRepository.GetById(id);
         }
 
     }

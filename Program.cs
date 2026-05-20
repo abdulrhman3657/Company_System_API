@@ -1,4 +1,5 @@
 using Company_System_API.Data;
+using Company_System_API.Models;
 using Company_System_API.Repositories;
 using Company_System_API.Services;
 using Microsoft.EntityFrameworkCore;
@@ -26,8 +27,8 @@ builder.Services.AddDbContext<DB>(options =>
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
-builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<IGenericRepository<Department>, GenericRepository<Department>>();
+builder.Services.AddScoped<IGenericRepository<Employee>, GenericRepository<Employee>>();
 
 var app = builder.Build();
 
