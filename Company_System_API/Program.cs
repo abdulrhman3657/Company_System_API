@@ -27,6 +27,7 @@ builder.Services.AddDbContext<DB>(options =>
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
+// register Department and Employee for the repository
 builder.Services.AddScoped<IGenericRepository<Department>, GenericRepository<Department>>();
 builder.Services.AddScoped<IGenericRepository<Employee>, GenericRepository<Employee>>();
 

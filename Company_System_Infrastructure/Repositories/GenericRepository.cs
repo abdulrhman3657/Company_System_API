@@ -2,6 +2,9 @@
 
 namespace Company_System_Infrastructure.Repositories
 {
+    // generic repository can work with different models
+    // T is a placeholder for the type
+    // "where T : class": T must by a class and not something like int, string, bool
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly DB db;
@@ -11,6 +14,7 @@ namespace Company_System_Infrastructure.Repositories
             db = dbFromDI;
         }
 
+        // return all records from table T
         public List<T> Get()
         {
             return db.Set<T>().ToList();
