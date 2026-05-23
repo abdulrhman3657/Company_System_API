@@ -10,9 +10,9 @@ namespace Company_System_API.Controllers
     public class DepartmentController : ControllerBase
     {
         private readonly IDepartmentService departmentService;
-        private readonly ILogger<EmployeeController> logger;
+        private readonly ILogger<DepartmentController> logger;
 
-        public DepartmentController(IDepartmentService departmentServiceFromDI, ILogger<EmployeeController> loggerFromDI)
+        public DepartmentController(IDepartmentService departmentServiceFromDI, ILogger<DepartmentController> loggerFromDI)
         {
             departmentService = departmentServiceFromDI;
             logger = loggerFromDI;
