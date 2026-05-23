@@ -31,7 +31,13 @@ builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IGenericRepository<Department>, GenericRepository<Department>>();
 builder.Services.AddScoped<IGenericRepository<Employee>, GenericRepository<Employee>>();
 
+
+// register health check
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
+
+app.Logger.LogInformation(5, "db is ready");
 
 // Swagger middleware
 // check for mode from launchSettings.json
@@ -40,6 +46,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// map the health endpoint
+app.MapHealthChecks("/health");
 
 // main path
 app.MapGet("/", () =>

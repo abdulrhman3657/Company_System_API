@@ -1,5 +1,6 @@
-﻿using Company_System_Infrastructure.Models;
+﻿using Company_System_API.Responses;
 using Company_System_Application.Services;
+using Company_System_Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company_System_API.Controllers
@@ -9,10 +10,12 @@ namespace Company_System_API.Controllers
     public class DepartmentController : ControllerBase
     {
         private readonly IDepartmentService departmentService;
+        private readonly ILogger<EmployeeController> logger;
 
-        public DepartmentController(IDepartmentService departmentServiceFromDI)
+        public DepartmentController(IDepartmentService departmentServiceFromDI, ILogger<EmployeeController> loggerFromDI)
         {
             departmentService = departmentServiceFromDI;
+            logger = loggerFromDI;
         }
 
         // Get all departments
@@ -21,7 +24,14 @@ namespace Company_System_API.Controllers
         {
             List<Department> Departments = departmentService.GetDepartmentsService();
 
-            return Ok(Departments);
+            logger.LogInformation("Successfully returned {Count} departments", Departments.Count);
+
+            return Ok(new ApiResponse<List<Department>>()
+            {
+                Data = Departments,
+                Message = "Returned all departments",
+                Success = true
+            });
         }
 
         // Add new department
@@ -30,7 +40,14 @@ namespace Company_System_API.Controllers
         {
             departmentService.AddDepartmentService(department);
 
-            return Ok(department);
+            logger.LogInformation("Successfully added new department, id: {Id}", department.Id);
+
+            return Ok(new ApiResponse<Department>()
+            {
+                Data = department,
+                Message = "Added new department",
+                Success = true
+            });
         }
 
         // Get department by id
@@ -41,10 +58,24 @@ namespace Company_System_API.Controllers
 
             if (department == null)
             {
-                return NotFound("department not found");
+                logger.LogWarning("failed to return department");
+
+                return NotFound(new ApiResponse<Department>()
+                {
+                    Data = null,
+                    Message = "department not found",
+                    Success = false
+                });
             }
 
-            return Ok(department);
+            logger.LogInformation("Successfully returned department, id: {Id}", department.Id);
+
+            return Ok(new ApiResponse<Department>()
+            {
+                Data = department,
+                Message = "Returned department by id",
+                Success = true
+            });
         }
     }
 }

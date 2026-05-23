@@ -1,5 +1,6 @@
-﻿using Company_System_Infrastructure.Models;
+﻿using Company_System_API.Responses;
 using Company_System_Application.Services;
+using Company_System_Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company_System_API.Controllers
@@ -9,10 +10,12 @@ namespace Company_System_API.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService employeeService;
+        private readonly ILogger<EmployeeController> logger;
 
-        public EmployeeController(IEmployeeService employeeServiceFromDI)
+        public EmployeeController(IEmployeeService employeeServiceFromDI, ILogger<EmployeeController> loggerFromDI)
         {
             employeeService = employeeServiceFromDI;
+            logger = loggerFromDI;
         }
 
         // Get all employees
@@ -22,7 +25,14 @@ namespace Company_System_API.Controllers
 
             List <Employee> Employees = employeeService.GetEmployeesService();
 
-            return Ok(Employees);
+            logger.LogInformation("Successfully returned {Count} employees", Employees.Count);
+
+            return Ok(new ApiResponse<List<Employee>>()
+            {
+                Data = Employees,
+                Message = "Returned all employees",
+                Success = true
+            });
         }
 
         // Add new employee
@@ -31,7 +41,14 @@ namespace Company_System_API.Controllers
         {
             employeeService.AddEmployeeService(employee);
 
-            return Ok(employee);
+            logger.LogInformation("Successfully added new employee, id: {Id}", employee.Id);
+
+            return Ok(new ApiResponse<Employee>()
+            {
+                Data = employee,
+                Message = "Added new employee",
+                Success = true
+            });
         }
 
         // Get employee by id
@@ -42,10 +59,24 @@ namespace Company_System_API.Controllers
 
             if (employee == null)
             {
-                return NotFound("employee not found");
+                logger.LogWarning("failed to return employee");
+
+                return NotFound(new ApiResponse<Employee>()
+                {
+                    Data = null,
+                    Message = "employee not found",
+                    Success = false
+                });
             }
 
-            return Ok(employee);
+            logger.LogInformation("Successfully returned employee, id: {Id}", employee.Id);
+
+            return Ok(new ApiResponse<Employee>()
+            {
+                Data = employee,
+                Message = "Returned employee by id",
+                Success = true
+            });
         }
     }
 }
