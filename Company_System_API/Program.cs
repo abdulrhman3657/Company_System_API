@@ -33,11 +33,10 @@ builder.Services.AddScoped<IGenericRepository<Employee>, GenericRepository<Emplo
 
 
 // register health check
-builder.Services.AddHealthChecks();
+// check for database connectivity
+builder.Services.AddHealthChecks().AddDbContextCheck<DB>();
 
 var app = builder.Build();
-
-app.Logger.LogInformation(5, "db is ready");
 
 // Swagger middleware
 // check for mode from launchSettings.json
