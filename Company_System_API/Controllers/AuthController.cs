@@ -33,5 +33,19 @@ namespace Company_System_API.Controllers
 
             return Ok(result);
         }
+
+        //  this endpoint is used when an old access token expires
+        [HttpPost("refresh-token")]
+        public IActionResult RefreshToken(RefreshTokenRequestDto request)
+        {
+            var result =  authService.RefreshToken(request);
+
+            if (result is null || result.AccessToken is null || result.RefreshToken is null)
+            {
+                return Unauthorized("Invalid refresh token");
+            }
+
+            return Ok(result);
+        }
     }
 }

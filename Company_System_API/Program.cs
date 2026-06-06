@@ -1,22 +1,43 @@
+using Company_System_Application.Services;
 using Company_System_Infrastructure.Data;
 using Company_System_Infrastructure.Models;
 using Company_System_Infrastructure.Repositories;
-using Company_System_Application.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Scalar.AspNetCore;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // add controller support for the app
 builder.Services.AddControllers();
-
-// Swagger services
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
+builder.Services.AddOpenApi();
 
 // register DB so it is not treated as request body
 builder.Services.AddDbContext<DB>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["AppSettings:Issuer"],
+
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["AppSettings:Audience"],
+
+            ValidateLifetime = true,
+
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:Token"]!)
+            ),
+
+            ValidateIssuerSigningKey = true
+        };
+    });
 
 // Registers EmployeeService in ASP.NET Core dependency injection
 // so controllers can access it
@@ -45,8 +66,8 @@ var app = builder.Build();
 // check for mode from launchSettings.json
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 
 // map the health endpoint

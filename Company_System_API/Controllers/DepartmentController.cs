@@ -1,6 +1,7 @@
 ﻿using Company_System_API.Responses;
 using Company_System_Application.Services;
 using Company_System_Infrastructure.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company_System_API.Controllers
@@ -19,6 +20,7 @@ namespace Company_System_API.Controllers
         }
 
         // Get all departments
+        [Authorize]
         [HttpGet]
         public IActionResult GetDepartments()
         {
@@ -35,6 +37,7 @@ namespace Company_System_API.Controllers
         }
 
         // Add new department
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult AddDepartment(Department department)
         {

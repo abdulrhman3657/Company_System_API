@@ -18,11 +18,26 @@ namespace Company_System_Infrastructure.Repositories
             return db.UserDB.Any(u => u.Username == username);
         }
 
-        public User? findUserByUsername(string username)
+        public User? FindUserByUsername(string username)
         {
             var user = db.UserDB.FirstOrDefault(u => u.Username == username);
 
             return user;
+        }
+
+        public User? FindUserById(Guid id)
+        {
+            var user = db.UserDB.FirstOrDefault(u => u.Id == id);
+
+            return user;
+        }
+
+        public void SetRefreshToken(string refreshToken, DateTime RefreshTokenExpiryTime, User user)
+        {
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = RefreshTokenExpiryTime;
+
+            db.SaveChanges();
         }
     }
 }
