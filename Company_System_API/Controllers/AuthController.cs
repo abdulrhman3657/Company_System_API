@@ -1,4 +1,5 @@
-﻿using Company_System_Application.Services;
+﻿using Company_System_API.Responses;
+using Company_System_Application.Services;
 using Company_System_Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,10 +16,20 @@ namespace Company_System_API.Controllers
 
             if(newUser is null)
             {
-                return BadRequest("usersname already exists");
+                return BadRequest(new ApiResponse<User>()
+                {
+                    Data = null,
+                    Message = "username already exists",
+                    Success = false
+                });
             }
 
-            return Ok(newUser);
+            return Ok(new ApiResponse<User>()
+            {
+                Data = newUser,
+                Message = "user created",
+                Success = true
+            });
         }
 
         [HttpPost("login")]
@@ -28,10 +39,20 @@ namespace Company_System_API.Controllers
 
             if (result is null)
             {
-                return BadRequest("wrong username or password");
+                return BadRequest(new ApiResponse<TokenResponseDto>()
+                {
+                    Data = null,
+                    Message = "wrong username or password",
+                    Success = false
+                });
             }
 
-            return Ok(result);
+            return Ok(new ApiResponse<TokenResponseDto>()
+            {
+                Data = result,
+                Message = "successfully logged in",
+                Success = true
+            });
         }
 
         //  this endpoint is used when an old access token expires
@@ -42,10 +63,20 @@ namespace Company_System_API.Controllers
 
             if (result is null || result.AccessToken is null || result.RefreshToken is null)
             {
-                return Unauthorized("Invalid refresh token");
+                return Unauthorized(new ApiResponse<TokenResponseDto>()
+                {
+                    Data = null,
+                    Message = "Invalid refresh token",
+                    Success = false
+                });
             }
 
-            return Ok(result);
+            return Ok(new ApiResponse<TokenResponseDto>()
+            {
+                Data = result,
+                Message = "successfully refreshed token",
+                Success = true
+            });
         }
     }
 }
