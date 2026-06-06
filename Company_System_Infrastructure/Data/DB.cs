@@ -15,5 +15,6 @@ namespace Company_System_Infrastructure.Data
         // create tables
         public DbSet<Employee> EmployeeDB { set; get; }
         public DbSet<Department> DepartmentDB { set; get; }
+        public DbSet<User> UserDB { set; get; }
     }
 }
