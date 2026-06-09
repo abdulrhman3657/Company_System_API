@@ -3,8 +3,8 @@
 using Company_System_Infrastructure.Models;
 using Company_System_Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -13,15 +13,19 @@ using System.Text;
 
 namespace Company_System_Application.Services
 {
-    public class AuthService(IUserRepository userRepository, IConfiguration configuration) : IAuthService
+    public class AuthService(IUserRepository userRepository, IConfiguration configuration, ILogger<AuthService> logger) : IAuthService
     {
         public User? Register(UserDto request)
         {
+            logger.LogInformation("Register service started for username: {Username}", request.Username);
+
             // check of the user already exists
             var checkUser = userRepository.CheckUserByUsername(request.Username);
 
             if (checkUser)
             {
+                logger.LogWarning("Register service failed. Username already exists: {Username}", request.Username);
+
                 return null;
             }
 
@@ -37,25 +41,35 @@ namespace Company_System_Application.Services
             // save the new user to the db
             userRepository.AddNewUser(newUser);
 
+            logger.LogInformation("Register service completed. User created with id: {UserId}, role: {Role}", newUser.Id, newUser.Role);
+
             // return the user to the controller
             return newUser;
         }
 
         public TokenResponseDto? Login(UserDto request)
         {
+            logger.LogInformation("Login service started for username: {Username}", request.Username);
+
             var user = userRepository.FindUserByUsername(request.Username);
 
             if(user is null)
             {
+                logger.LogWarning("Login service failed. Username not found: {Username}", request.Username);
+
                 return null;
             }
 
             if (new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, request.Password) == PasswordVerificationResult.Failed)
             {
+                logger.LogWarning("Login service failed. Invalid password for username: {Username}", request.Username);
+
                 return null;
             }
 
             var response = CreateTokenResponse(user);
+
+            logger.LogInformation("Login service completed successfully for user id: {UserId}", user.Id);
 
             return response;
         }
@@ -106,7 +120,7 @@ namespace Company_System_Application.Services
             return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
         }
 
-        // generare the refresh token
+        // generate the refresh token
         public string GenerateRefreshToken()
         {
             var randomNumber = new byte[32];
@@ -124,8 +138,23 @@ namespace Company_System_Application.Services
 
             if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
             {
+                if (user == null)
+                {
+                    logger.LogWarning("Refresh token validation failed. User not found. UserId: {UserId}", userId);
+                }
+                else if (user.RefreshToken != refreshToken)
+                {
+                    logger.LogWarning("Refresh token validation failed. Token mismatch for user id: {UserId}", userId);
+                }
+                 else if (user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+                {
+                    logger.LogWarning("Refresh token expired for user id: {UserId}", userId);
+                }
+
                 return null;
             }
+
+            logger.LogInformation("Refresh token validation succeeded for user id: {UserId}", userId);
 
             return user;
         }
@@ -133,12 +162,18 @@ namespace Company_System_Application.Services
         // 
         public TokenResponseDto? RefreshToken(RefreshTokenRequestDto request)
         {
+            logger.LogInformation("Refresh token process started for user id: {UserId}", request.UserId);
+
             var user = ValidateRefreshToken(request.UserId, request.RefreshToken);
 
             if (user is null)
             {
+                logger.LogWarning("Refresh token process failed for user id: {UserId}", request.UserId);
+
                 return null;
             }
+
+            logger.LogInformation("Refresh token process succeeded for user id: {UserId}", request.UserId);
 
             return CreateTokenResponse(user);
         }

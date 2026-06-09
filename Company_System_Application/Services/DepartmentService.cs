@@ -1,29 +1,29 @@
 ﻿using Company_System_Infrastructure.Models;
 using Company_System_Infrastructure.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace Company_System_Application.Services
 {
-    public class DepartmentService : IDepartmentService
+    public class DepartmentService(IGenericRepository<Department> departmentRepository, ILogger<DepartmentService> logger) : IDepartmentService
     {
-        private readonly IGenericRepository<Department> departmentRepository;
-
-        public DepartmentService(IGenericRepository<Department> departmentRepositoryFromDI)
-        {
-            departmentRepository = departmentRepositoryFromDI;
-        }
-
         public List<Department> GetDepartmentsService()
         {
+            logger.LogInformation("GetDepartmentsService started");
+
             return departmentRepository.Get();
         }
         
         public void AddDepartmentService(Department department)
         {
             departmentRepository.Add(department);
+
+            logger.LogInformation("successfully added a new department: {DepartmentId}", department.Id);
         }
 
         public Department? GetDepartmentByIdService(int id)
         {
+            logger.LogInformation("GetDepartmentByIdService started, department: {DepartmentId}", id);
+
             return departmentRepository.GetById(id);
         }
     }
