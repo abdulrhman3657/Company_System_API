@@ -2,8 +2,11 @@ using Company_System_Application.Services;
 using Company_System_Infrastructure.Data;
 using Company_System_Infrastructure.Models;
 using Company_System_Infrastructure.Repositories;
+// this namespace gives ASP.NET Core the tools to read JWT tokens from requests,
+// `JwtBearerDefaults.AuthenticationScheme`
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+// this namespace contains JWT/security token validation classes
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using System.Text;
@@ -18,6 +21,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<DB>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// when a request comes with a JWT token, validate it using the following rules
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -60,6 +64,27 @@ builder.Services.AddScoped<IGenericRepository<Employee>, GenericRepository<Emplo
 // check for database connectivity
 builder.Services.AddHealthChecks().AddDbContextCheck<DB>();
 
+// register a CORS policy
+builder.Services.AddCors(options =>
+{
+    // AllowAngularApp is the policy name
+    options.AddPolicy("AllowAngularApp", policy =>
+    {
+        // allow request coming from this origin
+        // http and https are different origins
+        policy.WithOrigins("http://localhost:4200")
+        // allow angular to send request headers
+        // ex:
+        // Content - Type: application / json
+        // Accept: application / json
+        // Authorization: Bearer token
+        .AllowAnyHeader()
+        // methods like GET, POST, PUT, DELETE
+        .AllowAnyMethod();
+    });
+});
+
+
 var app = builder.Build();
 
 // Swagger middleware
@@ -78,6 +103,8 @@ app.MapGet("/", () =>
 {
     return Results.Ok(new { response = "Welcome to company API" });
 });
+
+app.UseCors("AllowAngularApp");
 
 // look at all controller classes and connect their routes to the HTTP request pipeline
 app.MapControllers();
