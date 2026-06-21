@@ -2,11 +2,8 @@ using Company_System_Application.Services;
 using Company_System_Infrastructure.Data;
 using Company_System_Infrastructure.Models;
 using Company_System_Infrastructure.Repositories;
-// this namespace gives ASP.NET Core the tools to read JWT tokens from requests,
-// `JwtBearerDefaults.AuthenticationScheme`
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-// this namespace contains JWT/security token validation classes
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using System.Text;
