@@ -56,6 +56,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IGenericRepository<Department>, GenericRepository<Department>>();
 builder.Services.AddScoped<IGenericRepository<Employee>, GenericRepository<Employee>>();
 
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
 // register health check
 // check for database connectivity

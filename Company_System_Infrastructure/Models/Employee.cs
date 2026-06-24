@@ -1,4 +1,6 @@
-﻿
+
+
+using System.Text.Json.Serialization;
 
 namespace Company_System_Infrastructure.Models
 {
@@ -15,9 +17,10 @@ namespace Company_System_Infrastructure.Models
         // Foreign key
         public int DepartmentId { set; get; }
 
-        // navigation property
-        // used to get the Department object that is related to the Employee
-        public Department? Department { get; set; }
+      // navigation property
+      // used to get the Department object that is related to the Employee
+      [JsonIgnore]
+      public Department? Department { get; set; }
 
     }
 }
