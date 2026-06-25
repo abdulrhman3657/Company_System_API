@@ -4,7 +4,7 @@ namespace Company_System_Application.Services
 {
     public interface IEmployeeService
     {
-        List<Employee> GetEmployeesService();
+        List<EmployeeDto> GetEmployeesService();
         void AddEmployeeService(Employee employee);
         Employee? GetEmployeeByIdService(int id);
     }

@@ -1,4 +1,4 @@
-﻿using Company_System_API.Responses;
+using Company_System_API.Responses;
 using Company_System_Application.Services;
 using Company_System_Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -23,11 +23,11 @@ namespace Company_System_API.Controllers
         public IActionResult GetEmployees()
         {
 
-            List <Employee> Employees = employeeService.GetEmployeesService();
+            List<EmployeeDto> Employees = employeeService.GetEmployeesService();
 
             logger.LogInformation("Successfully returned {Count} employees", Employees.Count);
 
-            return Ok(new ApiResponse<List<Employee>>()
+            return Ok(new ApiResponse<List<EmployeeDto>>()
             {
                 Data = Employees,
                 Message = "Returned all employees",

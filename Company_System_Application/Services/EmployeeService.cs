@@ -4,14 +4,17 @@ using Microsoft.Extensions.Logging;
 
 namespace Company_System_Application.Services
 {
-    public class EmployeeService(IGenericRepository<Employee> employeeRepository, ILogger<EmployeeService> logger) : IEmployeeService
+    public class EmployeeService(
+        IGenericRepository<Employee> employeeRepository,
+        IEmployeeRepository employeeRepositoryWithDepartment,
+        ILogger<EmployeeService> logger) : IEmployeeService
     {
 
-        public List<Employee> GetEmployeesService()
+        public List<EmployeeDto> GetEmployeesService()
         {
             logger.LogInformation("GetEmployeesService started");
 
-            return employeeRepository.Get();
+            return employeeRepositoryWithDepartment.GetEmployeesWithDepartment();
         }
 
         public void AddEmployeeService(Employee employee)
