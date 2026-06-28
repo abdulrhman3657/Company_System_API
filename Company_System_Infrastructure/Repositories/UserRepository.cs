@@ -39,5 +39,36 @@ namespace Company_System_Infrastructure.Repositories
 
             db.SaveChanges();
         }
+
+        public User? EditUser(Guid id, User updatedUser)
+        {
+            User? user = db.UserDB.Find(id);
+
+            if(user is null)
+            {
+                return null;
+            }
+
+            user.Username = updatedUser.Username;
+
+            db.SaveChanges();
+
+            return user;
+        }
+
+        public bool DeleteUser(Guid id)
+        {
+            User? user = db.UserDB.Find(id);
+
+            if (user is null)
+            {
+                return false;
+            }
+
+            db.UserDB.Remove(user);
+            db.SaveChanges();
+
+            return true;
+        }
     }
 }

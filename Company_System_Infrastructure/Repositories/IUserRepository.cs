@@ -9,5 +9,7 @@ namespace Company_System_Infrastructure.Repositories
         public User? FindUserByUsername(string username);
         public User? FindUserById(Guid id);
         public void SetRefreshToken(string refreshToken, DateTime RefreshTokenExpiryTime, User user);
+        public User? EditUser(Guid id, User updatedUser);
+        public bool DeleteUser(Guid id);
     }
 }

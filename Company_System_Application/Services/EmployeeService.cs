@@ -33,11 +33,15 @@ namespace Company_System_Application.Services
         
         public Employee? EditEmployee(int id, Employee employee)
         {
+            logger.LogInformation("EditEmployee started, employee: {EmployeeId}", id);
+
             return employeeRepository.Edit(id, employee);
         }
 
         public bool DeleteEmployee(int id)
         {
+            logger.LogInformation("DeleteEmployee started, employee: {EmployeeId}", id);
+
             return employeeRepository.Delete(id);
         }
 

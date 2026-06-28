@@ -97,5 +97,65 @@ namespace Company_System_API.Controllers
                 Success = true
             });
         }
+
+        [HttpPut("{id}")]
+        public IActionResult EditUserById(Guid id, User user)
+        {
+            logger.LogInformation("Edit user attempt. UserId: {UserId}", id);
+
+            user.Id = id;
+
+            var updatedUser = authService.EditUser(id, user);
+
+            if (updatedUser == null)
+            {
+                logger.LogWarning("Edit user failed. User not found. UserId: {UserId}", id);
+
+                return NotFound(new ApiResponse<User>()
+                {
+                    Data = null,
+                    Message = "user not found",
+                    Success = false
+                });
+            }
+
+            logger.LogInformation("User edited successfully. UserId: {UserId}, Username: {Username}", updatedUser.Id, updatedUser.Username);
+
+            return Ok(new ApiResponse<User>()
+            {
+                Data = updatedUser,
+                Message = "Edited user by id",
+                Success = true
+            });
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteUserById(Guid id)
+        {
+            logger.LogInformation("Delete user attempt. UserId: {UserId}", id);
+
+            var deleted = authService.DeleteUser(id);
+
+            if (!deleted)
+            {
+                logger.LogWarning("Delete user failed. User not found. UserId: {UserId}", id);
+
+                return NotFound(new ApiResponse<User>()
+                {
+                    Data = null,
+                    Message = "user not found",
+                    Success = false
+                });
+            }
+
+            logger.LogInformation("User deleted successfully. UserId: {UserId}", id);
+
+            return Ok(new ApiResponse<User>()
+            {
+                Data = null,
+                Message = "Deleted user by id",
+                Success = true
+            });
+        }
     }
 }

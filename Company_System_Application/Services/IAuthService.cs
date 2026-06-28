@@ -9,5 +9,7 @@ namespace Company_System_Application.Services
         User? Register(UserDto user);
         public TokenResponseDto? Login(UserDto request);
         public TokenResponseDto? RefreshToken(RefreshTokenRequestDto request);
+        User? EditUser(Guid id, User updatedUser);
+        bool DeleteUser(Guid id);
     }
 }

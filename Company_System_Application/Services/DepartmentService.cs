@@ -31,10 +31,14 @@ namespace Company_System_Application.Services
         }
         public Department? EditDepartment(int id, Department department)
         {
+            logger.LogInformation("EditDepartment started, department: {DepartmentId}", id);
+
             return departmentRepository.Edit(id, department);
         }
         public bool DeleteDepartment(int id)
         {
+            logger.LogInformation("DeleteDepartment started, department: {DepartmentId}", id);
+
             return departmentRepository.Delete(id);
         }
     }

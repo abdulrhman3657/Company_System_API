@@ -177,5 +177,15 @@ namespace Company_System_Application.Services
 
             return CreateTokenResponse(user);
         }
+
+        public User? EditUser(Guid id, User updatedUser)
+        {
+            return userRepository.EditUser(id, updatedUser);
+        }
+
+        public bool DeleteUser(Guid id)
+        {
+            return userRepository.DeleteUser(id);
+        }
     }
 }
