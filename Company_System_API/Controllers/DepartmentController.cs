@@ -37,7 +37,7 @@ namespace Company_System_API.Controllers
         }
 
         // Add new department
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpPost]
         public IActionResult AddDepartment(Department department)
         {
