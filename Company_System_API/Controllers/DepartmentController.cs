@@ -20,7 +20,7 @@ namespace Company_System_API.Controllers
         }
 
         // Get all departments
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public IActionResult GetDepartments()
         {
@@ -77,6 +77,63 @@ namespace Company_System_API.Controllers
             {
                 Data = department,
                 Message = "Returned department by id",
+                Success = true
+            });
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult EditDepartmentById(int id, Department department)
+        {
+            department.Id = id;
+
+            var updatedDepartment = departmentService.EditDepartment(id, department);
+
+            if (updatedDepartment == null)
+            {
+                logger.LogWarning("failed to edit department");
+
+                return NotFound(new ApiResponse<Department>()
+                {
+                    Data = null,
+                    Message = "department not found",
+                    Success = false
+                });
+            }
+
+            logger.LogInformation("Successfully edited department, id: {Id}", department.Id);
+
+            return Ok(new ApiResponse<Department>()
+            {
+                Data = updatedDepartment,
+                Message = "Edited department by id",
+                Success = true
+            });
+
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteDepartmentById(int id)
+        {
+            var deleted = departmentService.DeleteDepartment(id);
+
+            if (!deleted)
+            {
+                logger.LogWarning("failed to delete department");
+
+                return NotFound(new ApiResponse<Department>()
+                {
+                    Data = null,
+                    Message = "department not found",
+                    Success = false
+                });
+            }
+
+            logger.LogInformation("Successfully deleted department, id: {Id}", id);
+
+            return Ok(new ApiResponse<Department>()
+            {
+                Data = null,
+                Message = "Deleted department by id",
                 Success = true
             });
         }

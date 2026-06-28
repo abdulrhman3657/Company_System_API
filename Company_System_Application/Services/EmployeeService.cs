@@ -30,6 +30,16 @@ namespace Company_System_Application.Services
 
             return employeeRepository.GetById(id);
         }
+        
+        public Employee? EditEmployee(int id, Employee employee)
+        {
+            return employeeRepository.Edit(id, employee);
+        }
+
+        public bool DeleteEmployee(int id)
+        {
+            return employeeRepository.Delete(id);
+        }
 
     }
 }

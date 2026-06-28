@@ -7,5 +7,7 @@ namespace Company_System_Application.Services
         List<Department> GetDepartmentsService();
         void AddDepartmentService(Department department);
         Department? GetDepartmentByIdService(int id);
+        Department? EditDepartment(int id, Department department);
+        bool DeleteDepartment(int id);
     }
 }

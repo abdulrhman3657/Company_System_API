@@ -29,5 +29,13 @@ namespace Company_System_Application.Services
 
             return departmentRepository.GetById(id);
         }
+        public Department? EditDepartment(int id, Department department)
+        {
+            return departmentRepository.Edit(id, department);
+        }
+        public bool DeleteDepartment(int id)
+        {
+            return departmentRepository.Delete(id);
+        }
     }
 }

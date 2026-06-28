@@ -7,5 +7,7 @@ namespace Company_System_Application.Services
         List<EmployeeDto> GetEmployeesService();
         void AddEmployeeService(Employee employee);
         Employee? GetEmployeeByIdService(int id);
+        Employee? EditEmployee(int id, Employee employee);
+        bool DeleteEmployee(int id);
     }
 }

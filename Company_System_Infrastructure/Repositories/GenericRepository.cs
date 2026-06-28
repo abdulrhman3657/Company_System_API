@@ -33,5 +33,33 @@ namespace Company_System_Infrastructure.Repositories
 
             return item;
         }
+        public T? Edit(int id, T updatedItem)
+        {
+            T? item = db.Set<T>().Find(id);
+
+            if(item is null)
+            {
+                return null;
+            }
+
+            db.Entry(item).CurrentValues.SetValues(updatedItem);
+            db.SaveChanges();
+
+            return item;
+        }
+        public bool Delete(int id)
+        {
+            T? item = db.Set<T>().Find(id);
+
+            if (item is null)
+            {
+                return false;
+            }
+
+            db.Set<T>().Remove(item);
+            db.SaveChanges();
+
+            return true;
+        }
     }
 }
